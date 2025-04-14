@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Julius+Sans+One&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+    <title>Bakery Services</title>
+    <style>
+        body {
+            margin: 0;
+        }
+        body::-webkit-scrollbar {
+            display: none;
+        }
+        .services-title {
+            text-align: center;
+            margin: 10px auto;
+        }
+        .services-section {
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            height: 45vh;
+            gap: 16px;
+            z-index: 7;
+        }
+        #grid-item-1 {
+            grid-column: 1;
+            background-color: #ffe0e0;
+            box-shadow: 4px 6px 12px saddlebrown;
+            border-radius: 7px;
+        }
+        #grid-item-2 {
+            grid-column: 2;
+            background-color: #ffe0e0;
+            padding: 12px;
+            overflow-y: scroll;
+            text-align: center;
+            box-shadow: 4px 6px 12px saddlebrown;
+            border-radius: 7px;
+        }
+        .our-services > h1 {
+            margin: 0 0 8px 0;
+        }
+        .our-services > h3 {
+            margin: 8px 0 8px 0;
+        }
+        #three-canvas {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="services-title">Our Services</h1>
+    <div class="services-section">
+        <div id="grid-item-1">
+            <canvas id="three-canvas"></canvas>
+        </div>
+        <div id="grid-item-2">
+            <div class="our-services">
+                <h1>Cakes and Pastries</h1>
+                <h3>
+                    ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </h3>
+            </div>
+
+            <div class="our-services">
+                <h1>Gifts and Suprises</h1>
+                <h3>
+                    ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+                    ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </h3>                    
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/loaders/GLTFLoader.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const gridItem = document.getElementById('grid-item-1');
+            const canvas = document.getElementById('three-canvas');
+            
+            canvas.width = gridItem.clientWidth;
+            canvas.height = gridItem.clientHeight;
+            
+            const scene = new THREE.Scene();
+
+            const camera = new THREE.PerspectiveCamera(75, gridItem.clientWidth / gridItem.clientHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ 
+                canvas: canvas, 
+                alpha: true,
+                antialias: true
+            });
+            
+            renderer.setSize(gridItem.clientWidth, gridItem.clientHeight);
+            
+            const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
+            scene.add(ambientLight);
+            
+            // const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            // directionalLight.position.set(1, 1, 1);
+            // scene.add(directionalLight);
+        
+            camera.position.z = 7;
+
+            const loader = new THREE.GLTFLoader();
+
+            let bdayCake;
+            let loaf;
+            let sausage;
+
+            loader.load(
+                "3d-models/cake/scene.gltf", 
+                (gltf) => {
+                    bdayCake = gltf.scene;
+                    
+                    bdayCake.scale.set(0.5, 0.5, 0.05);
+            
+                    bdayCake.position.set(0, 3, 0);
+                    bdayCake.rotation.set(0, 0, 0);
+            
+                    scene.add(bdayCake);
+                }
+            )
+
+            loader.load(
+                "3d-models/bagel/scene.gltf", 
+                (gltf) => {
+                    sausage = gltf.scene;
+                    
+                    sausage.scale.set(4, 4, 1.75);
+            
+                    sausage.position.set(3, -2, 2);
+                    sausage.rotation.set(7, 0, 0);
+            
+                    scene.add(sausage);
+                }
+            )
+
+            loader.load(
+                "3d-models/loaf/scene.gltf", 
+                (gltf) => {
+                    loaf = gltf.scene;
+            
+                    loaf.scale.set(2, 3, 1);
+                    loaf.position.set(-5, -3, 0);
+                    loaf.rotation.set(0, 0, 0)
+            
+                    scene.add(loaf);
+            
+                    // Add spotlight targeting the loaf
+                    const spotLight = new THREE.SpotLight(
+                        0xfff8dc, 
+                        7,
+                        0, 
+                        Math.PI / 12
+                    );
+                    spotLight.position.set(4, 3, 5);
+            
+                    spotLight.target = loaf;
+                    scene.add(spotLight);
+                    scene.add(spotLight.target);
+            
+                    // Optional: Add a little helper to see light cone during dev
+                    //const helper = new THREE.SpotLightHelper(spotLight);
+                    //scene.add(helper);
+                }
+            );
+
+            loader.load(
+                "3d-models/cinnamon/scene.gltf", 
+                (gltf) => {
+                    roll = gltf.scene;
+                    
+                    roll.scale.set(9, 9, 12);
+            
+                    roll.position.set(-3.75, 1.5, 2);
+                    roll.rotation.set(4.75, 0.07, -0.25);
+            
+                    scene.add(roll);
+                }
+            )
+
+            const particleCount = 500;
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+            const velocities = [];
+            
+            for (let i = 0; i < particleCount; i++) {
+                const i3 = i * 3;
+                // Start at top center
+                positions[i3] = 0; // x
+                positions[i3 + 1] = 5; // y
+                positions[i3 + 2] = 0; // z
+            
+                colors[i3] = Math.random(); // R
+                colors[i3 + 1] = Math.random(); // G
+                colors[i3 + 2] = Math.random(); // B
+            
+                velocities.push({
+                    x: (Math.random() - 0.5) * 0.05,
+                    y: -Math.random() * 0.02,
+                });
+            }
+
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+            
+            const material = new THREE.PointsMaterial({
+                size: 0.05,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.05,
+            });
+            
+            const particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+
+            function animateParticles() {
+                const positionAttr = particles.geometry.attributes.position;
+            
+                for (let i = 0; i < particleCount; i++) {
+                    const i3 = i * 3;
+                    positionAttr.array[i3] += velocities[i].x;     // x
+                    positionAttr.array[i3 + 1] += velocities[i].y; // y
+            
+                    if (positionAttr.array[i3 + 1] < -5) {
+                        positionAttr.array[i3] = 0;
+                        positionAttr.array[i3 + 1] = 5;
+                    }
+                }
+            
+                positionAttr.needsUpdate = true;
+            }
+
+            function animate() {
+                requestAnimationFrame(animate);
+                animateParticles();
+                renderer.render(scene, camera);
+            }
+            animate();
+        });
+    </script>
+</body>
+</html>

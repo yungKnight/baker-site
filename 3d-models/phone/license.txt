@@ -1,0 +1,11 @@
+Model Information:
+* title:	Dial Phone
+* source:	https://sketchfab.com/3d-models/dial-phone-287852606fb54b76b8bd786b03dfb3ce
+* author:	Malachi (https://sketchfab.com/smoggu)
+
+Model License:
+* license type:	CC-BY-NC-ND-4.0 (http://creativecommons.org/licenses/by-nc-nd/4.0/)
+* requirements:	Author must be credited. No commercial use. Modified versions can not be distributed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Dial Phone" (https://sketchfab.com/3d-models/dial-phone-287852606fb54b76b8bd786b03dfb3ce) by Malachi (https://sketchfab.com/smoggu) licensed under CC-BY-NC-ND-4.0 (http://creativecommons.org/licenses/by-nc-nd/4.0/)

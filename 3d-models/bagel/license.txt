@@ -1,0 +1,11 @@
+Model Information:
+* title:	Bagel
+* source:	https://sketchfab.com/3d-models/bagel-6873aaf2595a4e8aa8f72f0e4de611f5
+* author:	3DCars (https://sketchfab.com/3DCarss)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Bagel" (https://sketchfab.com/3d-models/bagel-6873aaf2595a4e8aa8f72f0e4de611f5) by 3DCars (https://sketchfab.com/3DCarss) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

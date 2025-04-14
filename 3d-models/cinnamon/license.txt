@@ -1,0 +1,11 @@
+Model Information:
+* title:	Bun / Roll | Булочка
+* source:	https://sketchfab.com/3d-models/bun-roll-778299f0684b41ad8d522038b3a27a24
+* author:	hoxsvl (https://sketchfab.com/hoxsvl)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Bun / Roll | Булочка" (https://sketchfab.com/3d-models/bun-roll-778299f0684b41ad8d522038b3a27a24) by hoxsvl (https://sketchfab.com/hoxsvl) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

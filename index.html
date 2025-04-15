@@ -27,9 +27,11 @@
   </div>
 
   <div class="services-section">
-      <div id="grid-item-1"></div>
+      <div id="grid-item-1">
+        <canvas id="three-canvas"></canvas>
+      </div>
       <div id="grid-item-2">
-          <div class="our-services cakes">
+          <div class="our-services cakes" id="cakes-pastries">
               <h1>Cakes and Pastries</h1>
               <h3>
                   ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -46,7 +48,7 @@
                   proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
               </h3>
           </div>
-          <div class="our-services gift">
+          <div class="our-services gift" id="gifts-surprises">
               <h1>Gifts and Suprises</h1>
               <h3>
                   ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -179,6 +181,220 @@
         renderer.render(scene, camera);
       }
       animate();
+    });
+  </script>
+
+  <script defer>
+    console.log("italawa")
+    document.addEventListener('DOMContentLoaded', function() {
+      const gridItem = document.getElementById('grid-item-1');
+      const canvas = document.getElementById('three-canvas');
+      const giftsSection = document.getElementById('gifts-surprises');
+      const cakesSection = document.getElementById('cakes-pastries');
+            
+      canvas.width = gridItem.clientWidth;
+      canvas.height = gridItem.clientHeight;
+            
+      const scene = new THREE.Scene();
+
+      const camera = new THREE.PerspectiveCamera(75, gridItem.clientWidth / gridItem.clientHeight, 0.1, 1000);
+      const renderer = new THREE.WebGLRenderer({ 
+        canvas: canvas, 
+        alpha: true,
+        antialias: true
+      });
+            
+      renderer.setSize(gridItem.clientWidth, gridItem.clientHeight);
+            
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+      scene.add(ambientLight);
+      
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 1.50);
+      directionalLight.position.set(1, 1, 2);
+      scene.add(directionalLight);
+        
+      camera.position.z = 7;
+
+      // Model Group for bakery models
+      const bakeryModelsGroup = new THREE.Group();
+      scene.add(bakeryModelsGroup);
+      let cube
+      const loader = new THREE.GLTFLoader();
+      loader.load(
+          "3d-models/gift/scene.gltf", 
+          (gltf) => {
+              cube = gltf.scene;
+              cube.scale.set(2.5, 2.5, 2.5)
+              cube.position.set(0, -2, 0);
+              cube.visible = false;
+              scene.add(cube);
+          }
+      )
+
+      let bdayCake;
+      let loaf;
+      let sausage;
+      loader.load(
+          "3d-models/cake/scene.gltf", 
+          (gltf) => {
+              bdayCake = gltf.scene;
+              
+              bdayCake.scale.set(0.5, 0.5, 0.6);
+      
+              bdayCake.position.set(-4.25, 2, 0);
+              bdayCake.rotation.set(1.25, 4.25, 0);
+      
+              bakeryModelsGroup.add(bdayCake);
+          }
+      )
+
+      loader.load(
+          "3d-models/bagel/scene.gltf", 
+          (gltf) => {
+              sausage = gltf.scene;
+              
+              sausage.scale.set(4, 4, 1.75);
+      
+              sausage.position.set(1.5, -2, 2);
+              sausage.rotation.set(7.1, 0, 0);
+      
+              bakeryModelsGroup.add(sausage);
+          }
+      )
+
+      loader.load(
+          "3d-models/cinnamon/scene.gltf", 
+          (gltf) => {
+              roll = gltf.scene;
+              
+              roll.scale.set(9, 9, 15);
+      
+              roll.position.set(-4, 1.5, 2);
+              roll.rotation.set(4.75, 0.07, -0.25);
+      
+              bakeryModelsGroup.add(roll);
+          }
+      )
+
+      const particleCount = 500;
+      const positions = new Float32Array(particleCount * 3);
+      const colors = new Float32Array(particleCount * 3);
+      const velocities = [];
+            
+      for (let i = 0; i < particleCount; i++) {
+          const i3 = i * 3;
+          // Start at top center
+          positions[i3] = 0; // x
+          positions[i3 + 1] = 5; // y
+          positions[i3 + 2] = 0; // z
+      
+          colors[i3] = Math.random(); // R
+          colors[i3 + 1] = Math.random(); // G
+          colors[i3 + 2] = Math.random(); // B
+      
+          velocities.push({
+              x: (Math.random() - 0.5) * 0.05,
+              y: -Math.random() * 0.02,
+          });
+      }
+
+      const geometry = new THREE.BufferGeometry();
+      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+            
+      const material = new THREE.PointsMaterial({
+          size: 0.05,
+          vertexColors: true,
+          transparent: true,
+          opacity: 0.05,
+      });
+            
+      const particles = new THREE.Points(geometry, material);
+      bakeryModelsGroup.add(particles);
+      function animateParticles() {
+          const positionAttr = particles.geometry.attributes.position;
+      
+          for (let i = 0; i < particleCount; i++) {
+              const i3 = i * 3;
+              positionAttr.array[i3] += velocities[i].x;     // x
+              positionAttr.array[i3 + 1] += velocities[i].y; // y
+      
+              if (positionAttr.array[i3 + 1] < -5) {
+                  positionAttr.array[i3] = 0;
+                  positionAttr.array[i3 + 1] = 5;
+              }
+          }
+      
+          positionAttr.needsUpdate = true;
+      }
+
+            // Track which section is currently in view
+      let currentlyVisibleSection = "cakes";
+
+      // Function to check if element is half visible in the container
+      function isElementHalfVisibleInContainer(el, container) {
+          const elRect = el.getBoundingClientRect();
+          const containerRect = container.getBoundingClientRect();
+          return (
+              elRect.top <= containerRect.bottom &&
+              elRect.top + (elRect.height / 2) >= containerRect.top &&
+              elRect.top + (elRect.height / 2) <= containerRect.bottom
+          );
+      }
+
+            // Update 3D models based on visible section
+      function updateModels() {
+          const container = document.getElementById('grid-item-2');
+          
+          // Check which section is most visible
+          if (isElementHalfVisibleInContainer(giftsSection, container)) {
+              if (currentlyVisibleSection !== "gifts") {
+                  // Switch to gifts mode - show cube
+                  bakeryModelsGroup.visible = false;
+                  cube.visible = true;
+                  currentlyVisibleSection = "gifts";
+              }
+          } else if (isElementHalfVisibleInContainer(cakesSection, container)) {
+              if (currentlyVisibleSection !== "cakes") {
+                  // Switch to cakes mode - show bakery models
+                  bakeryModelsGroup.visible = true;
+                  cube.visible = false;
+                  currentlyVisibleSection = "cakes";
+              }
+          }
+      }
+
+      document.getElementById('grid-item-2').addEventListener('scroll', function() {
+          updateModels();
+      });
+
+      // Initial check
+      updateModels();
+
+      function animate() {
+          requestAnimationFrame(animate);
+          
+          if (bakeryModelsGroup.visible) {
+              camera.position.set(0, 0, 7)
+              animateParticles();
+              if (bdayCake) bdayCake.rotation.y += 0.005;
+          }
+          
+          if (cube && cube.visible) {
+            camera.position.set(0, 1, 7)
+            cube.rotation.y += 0.0075;
+            cube.position.z -= 0.0025;
+          }
+          
+          renderer.render(scene, camera);
+      }
+      animate();
+      // Handle window resize
+      window.addEventListener('resize', function() {
+          camera.aspect = gridItem.clientWidth / gridItem.clientHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(gridItem.clientWidth, gridItem.clientHeight);
+      });
     });
   </script>
 </body>
